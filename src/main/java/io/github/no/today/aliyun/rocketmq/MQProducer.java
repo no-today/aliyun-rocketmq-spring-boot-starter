@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -55,6 +56,63 @@ public class MQProducer {
                         tag_,
                         JSON.toJSONBytes(message, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullBooleanAsFalse));
                 msg.setKey(key);
+
+                try {
+                    SendResult sendResult = producer.send(msg);
+                    // 同步发送消息，只要不抛异常就是成功
+                    if (sendResult != null) {
+                        log.info(new Date() + " Send mq message success. Topic is: " + msg.getTopic() + ", Tag is: " + tag_ + " msgId is: " + sendResult.getMessageId());
+                    }
+                } catch (Exception e) {
+                    // 消息发送失败，需要进行重试处理，可重新发送这条消息或持久化这条数据进行补偿处理
+                    log.info(new Date() + " Send mq message failed. Topic is: " + msg.getTopic() + ", Tag is: " + tag_, e);
+                }
+            } catch (Exception e) {
+                log.error("[消息准备异常]", e);
+            }
+        });
+    }
+
+
+    public void sendTimingMessage(String topic, String tag, String key, Object message, Instant timing) {
+        executor.execute(() -> {
+            try {
+                String tag_ = MQEnvUtil.handleTag(environment, tag);
+                Message msg = new Message(
+                        topic,
+                        tag_,
+                        JSON.toJSONBytes(message, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullBooleanAsFalse));
+                msg.setKey(key);
+
+                msg.setStartDeliverTime(timing.toEpochMilli());
+
+                try {
+                    SendResult sendResult = producer.send(msg);
+                    // 同步发送消息，只要不抛异常就是成功
+                    if (sendResult != null) {
+                        log.info(new Date() + " Send mq message success. Topic is: " + msg.getTopic() + ", Tag is: " + tag_ + " msgId is: " + sendResult.getMessageId());
+                    }
+                } catch (Exception e) {
+                    // 消息发送失败，需要进行重试处理，可重新发送这条消息或持久化这条数据进行补偿处理
+                    log.info(new Date() + " Send mq message failed. Topic is: " + msg.getTopic() + ", Tag is: " + tag_, e);
+                }
+            } catch (Exception e) {
+                log.error("[消息准备异常]", e);
+            }
+        });
+    }
+
+    public void sendDelayMessage(String topic, String tag, String key, Object message, Long delayTime) {
+        executor.execute(() -> {
+            try {
+                String tag_ = MQEnvUtil.handleTag(environment, tag);
+                Message msg = new Message(
+                        topic,
+                        tag_,
+                        JSON.toJSONBytes(message, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullBooleanAsFalse));
+                msg.setKey(key);
+
+                msg.setStartDeliverTime(delayTime);
 
                 try {
                     SendResult sendResult = producer.send(msg);
