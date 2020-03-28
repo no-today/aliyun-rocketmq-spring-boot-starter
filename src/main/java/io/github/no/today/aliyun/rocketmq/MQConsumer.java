@@ -30,6 +30,6 @@ public interface MQConsumer {
     boolean process(Message message, ConsumeContext contest);
 
     default int threadCount() {
-        return 10;
+        return 20;
     }
 }
