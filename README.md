@@ -16,7 +16,7 @@ application:
 
 ### 生产
 
-直接注入 **MQProducer** 即可发送消息(目前只支持普通消息)
+直接注入 **MQProducer** 即可发送消息
 
 ### 消费
 
