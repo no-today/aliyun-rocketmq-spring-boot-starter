@@ -29,6 +29,11 @@ public interface MQConsumer {
      */
     boolean process(Message message, ConsumeContext contest);
 
+    /**
+     * 消费者线程数
+     *
+     * @return thread count
+     */
     default int threadCount() {
         return 20;
     }

@@ -4,11 +4,31 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "application.rocket-mq")
 public class RocketMQConfigProperties {
+
+    /**
+     * 阿里云 Access key
+     */
     private String access;
+
+    /**
+     * 阿里云 Secret
+     */
     private String secret;
+
+    /**
+     * TCP 协议客户端接入点
+     */
     private String addr;
-    private String sendMsgTimeOutMillis;
-    private Boolean enable;
+
+    /**
+     * 发送消息超时时间
+     */
+    private String sendMsgTimeOutMillis = String.valueOf(3000);
+
+    /**
+     * 启动消费
+     */
+    private boolean enable = true;
 
     public String getAccess() {
         return access;
@@ -43,6 +63,15 @@ public class RocketMQConfigProperties {
 
     public RocketMQConfigProperties setSendMsgTimeOutMillis(String sendMsgTimeOutMillis) {
         this.sendMsgTimeOutMillis = sendMsgTimeOutMillis;
+        return this;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public RocketMQConfigProperties setEnable(boolean enable) {
+        this.enable = enable;
         return this;
     }
 

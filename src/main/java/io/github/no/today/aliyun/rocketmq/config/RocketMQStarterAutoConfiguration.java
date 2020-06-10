@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 /**
  * @author no-today
@@ -21,8 +20,8 @@ public class RocketMQStarterAutoConfiguration {
 
     @Bean
     @ConditionalOnClass(MQProducer.class)
-    public MQProducer mqProducer(RocketMQConfigProperties rocketMQConfigProperties, Environment env) {
-        return new MQProducer(rocketMQConfigProperties, env);
+    public MQProducer mqProducer(RocketMQConfigProperties rocketMQConfigProperties) {
+        return new MQProducer(rocketMQConfigProperties);
     }
 
     @Bean

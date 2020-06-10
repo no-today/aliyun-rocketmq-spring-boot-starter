@@ -9,7 +9,7 @@ application:
   rocket-mq:
     access: Key
     secret: secret
-    send-msg-time-out-millis: 3000 # 发送消息超时事件
+    send-msg-time-out-millis: 3000 # 发送消息超时时间
     addr: # TCP 协议客户端接入点
     enable: true # 是否开启消费
 ```

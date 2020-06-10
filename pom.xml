@@ -44,16 +44,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
-    <distributionManagement>
-        <repository>
-            <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/124975-release-RO2eSU/</url>
-        </repository>
-        <snapshotRepository>
-            <id>rdc-snapshots</id>
-            <url>https://repo.rdc.aliyun.com/repository/124975-snapshot-g5MgG2/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

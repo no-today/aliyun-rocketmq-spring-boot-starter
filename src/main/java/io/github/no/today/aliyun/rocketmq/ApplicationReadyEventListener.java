@@ -6,7 +6,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 
 public class ApplicationReadyEventListener implements ApplicationListener<ApplicationReadyEvent> {
-    private static Logger logger = LoggerFactory.getLogger(ApplicationReadyEventListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationReadyEventListener.class);
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -15,6 +15,5 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
         MQConsumer.mqProcessorMap.forEach((s, mqConsumer) -> {
             mqConsumer.startConsumer();
         });
-
     }
 }

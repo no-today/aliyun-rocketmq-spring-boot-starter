@@ -34,24 +34,24 @@ public abstract class AbstractMQConsumer implements MQConsumer {
     @Override
     public void startConsumer() {
         final Properties properties = new Properties();
-        final String groupId = MQEnvUtil.handleGroupId(environment, getGroupId());
+
         properties.put(PropertyKeyConst.AccessKey, rocketMQConfigProperties.getAccess());
         properties.put(PropertyKeyConst.SecretKey, rocketMQConfigProperties.getSecret());
         properties.put(PropertyKeyConst.NAMESRV_ADDR, rocketMQConfigProperties.getAddr());
-        properties.put(PropertyKeyConst.GROUP_ID, groupId);
+        properties.put(PropertyKeyConst.GROUP_ID, getGroupId());
         properties.put(PropertyKeyConst.ConsumeThreadNums, threadCount());
 
         final Consumer consumer = ONSFactory.createConsumer(properties);
-        consumer.subscribe(getTopic(), MQEnvUtil.handleTag(environment, getTag()), (message, context) -> {
+        consumer.subscribe(getTopic(), getTag(), (message, context) -> {
             log.debug("[Rocket-MQ] - Receive: " + message);
             return process(message, context) ? Action.CommitMessage : Action.ReconsumeLater;
         });
 
         if (rocketMQConfigProperties.getEnable()) {
             consumer.start();
-            log.info("[正在监听] - gid: {}", groupId);
+            log.info("[正在监听] - gid: {}", getGroupId());
         } else {
-            log.info("[关闭监听] - gid: {}", groupId);
+            log.info("[关闭监听] - gid: {}", getGroupId());
         }
     }
 
