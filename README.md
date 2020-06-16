@@ -2,6 +2,17 @@
 
 ## 使用姿势
 
+### 引入依赖
+
+```xml
+<!-- RocketMQ Starter -->
+<dependency>
+    <groupId>io.github.no-today</groupId>
+    <artifactId>aliyun-rocketmq-spring-boot-starter</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
 ### 配置
 
 ```yaml
