@@ -43,7 +43,7 @@ public class MQProducer {
             Message msg = new Message(
                     topic,
                     tag,
-                    JSON.toJSONBytes(message, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullBooleanAsFalse));
+                    JSON.toJSONBytes(message));
             msg.setKey(key);
 
             try {
