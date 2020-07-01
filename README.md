@@ -9,7 +9,7 @@
 <dependency>
     <groupId>io.github.no-today</groupId>
     <artifactId>aliyun-rocketmq-spring-boot-starter</artifactId>
-    <version>1.0</version>
+    <version>1.0.RELEASE</version>
 </dependency>
 ```
 
