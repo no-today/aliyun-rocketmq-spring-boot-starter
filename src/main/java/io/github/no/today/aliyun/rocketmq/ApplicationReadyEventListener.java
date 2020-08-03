@@ -12,8 +12,6 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
     public void onApplicationEvent(ApplicationReadyEvent event) {
         logger.info("Start listening for message queues!!");
 
-        MQConsumer.mqProcessorMap.forEach((s, mqConsumer) -> {
-            mqConsumer.startConsumer();
-        });
+        MQConsumer.mqProcessorMap.forEach((s, mqConsumer) -> mqConsumer.startConsumer());
     }
 }

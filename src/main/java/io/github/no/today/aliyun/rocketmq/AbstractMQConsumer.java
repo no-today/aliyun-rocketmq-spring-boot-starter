@@ -5,7 +5,6 @@ import com.aliyun.openservices.ons.api.Consumer;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import io.github.no.today.aliyun.rocketmq.config.RocketMQConfigProperties;
-import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -19,9 +18,6 @@ public abstract class AbstractMQConsumer implements MQConsumer {
 
     @Resource
     protected RocketMQConfigProperties rocketMQConfigProperties;
-
-    @Resource
-    private Environment environment;
 
     protected abstract String getTopic();
 
@@ -41,7 +37,7 @@ public abstract class AbstractMQConsumer implements MQConsumer {
         properties.put(PropertyKeyConst.GROUP_ID, getGroupId());
         properties.put(PropertyKeyConst.ConsumeThreadNums, threadCount());
 
-        final Consumer consumer = ONSFactory.createConsumer(properties);
+        final Consumer consumer = ONSFactory.createConsumer(setProperties(properties));
         consumer.subscribe(getTopic(), getTag(), (message, context) -> {
             log.debug("[Rocket-MQ] - Receive: " + message);
             return process(message, context) ? Action.CommitMessage : Action.ReconsumeLater;
@@ -58,5 +54,16 @@ public abstract class AbstractMQConsumer implements MQConsumer {
     @PostConstruct
     void init() {
         mqProcessorMap.put(getTopic() + "-" + getTag(), this);
+    }
+
+    /**
+     * 自定义配置
+     * <p>
+     * 默认仅配置 GID 和消费者线程数
+     *
+     * @see com.aliyun.openservices.ons.api.PropertyKeyConst
+     */
+    protected Properties setProperties(Properties properties) {
+        return properties;
     }
 }
