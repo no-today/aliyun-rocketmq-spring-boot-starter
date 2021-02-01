@@ -2,7 +2,7 @@ package io.github.no.today.aliyun.rocketmq.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "application.rocket-mq")
+@ConfigurationProperties(prefix = "rocket-mq")
 public class RocketMQConfigProperties {
 
     /**
